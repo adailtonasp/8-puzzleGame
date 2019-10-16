@@ -8,7 +8,7 @@ Siga os passos abaixo para rodar o programa:
  - Pressione o botão `RODAR ALGORITMO` e aguarde a solução
  - Com os resultado na tela é possível visualizar o caminho feito pelo algoritmo pressionando o botão `RODAR SIMULAÇÃO`
 
->Contribuidores:[Adailton Palhano](https://github.com/adailtonasp), [Victor Ramos](https://github.com/victrck), David Jonathas.
+>Contribuidores:[Adailton Palhano](https://github.com/adailtonasp), [Victor Ramos](https://github.com/victrck), [David Jonathas](https://github.com/davidJonath).
 
 
 
