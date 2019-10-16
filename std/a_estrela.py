@@ -40,7 +40,11 @@ class A_estrela:
                 arq.write("Estado final encontrado!!!\nCusto = " + str(elementoAtual.custo) + "\nProfundidade = " + str(elementoAtual.profundidade)) 
                 arq.close()
                 print("O elementoAtual possui o estado final!!\n")
-                return elementoAtual
+                result = []
+                result.append(elementoAtual)
+                result.append(self.listaDeNodes)
+                return result
+#                return elementoAtual
             else:
                 elementoAtual.set_filhos(self.listaDeNodes,self.estadoFinal)
                 self.listaDeNodes.sort(key = self.avalia_lista_node)

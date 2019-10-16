@@ -7,6 +7,8 @@ Created on Wed Apr 24 20:54:14 2019
 
 import random
 
+import numpy as np
+
 class Profundidade:
 
     def __init__(self, root,estadoFinal):
@@ -17,13 +19,47 @@ class Profundidade:
         self.moveList = []
         self.teste_lista()
         
+        
+    def findIndex(self,estadoFinal,ele):
+        auxLista = []
+        for i in range(0,len(estadoFinal)):
+            for j in range(0,len(estadoFinal)):
+                if estadoFinal[i][j] == ele:
+                    auxLista.append(i)
+                    auxLista.append(j)
+                    return auxLista
+        return auxLista        
+
+
+    def avalia_manhatam(self,mat,estadoFinal):
+        #calcula distancia de manhattan
+        manhattanSoma = 0
+    
+        for i in range(0,len(mat)):
+            for j in range(0,len(mat)):
+    
+                auxLista = self.findIndex(self.estadoFinal,mat[i][j])
+                
+                manhattanSoma += (np.abs(i - auxLista[0]) + np.abs(j - auxLista[1]))
+                
+        return manhattanSoma
+        
     def teste_lista(self):
+        cont = 0
+        aux = self.avalia_manhatam(self.listaDeNodes[0].statePuzzle.mat,self.estadoFinal)
         arq = open('output_Profundidade.txt','w')
         arq.write("Busca em Profundidade\n")
         while(True):
+            cont+=1
+#            if(cont == 15):
+#                break
             elementoAtual = self.listaDeNodes.pop()
+            self.moveList.append(elementoAtual.statePuzzle.nullPosition)
+            self.visitList.append(elementoAtual.statePuzzle.mat)
+            #print("moveList" + str(self.moveList) + "\n")
             print(elementoAtual.statePuzzle.mat) #  <----PRINT
             #vamos gravar as saidas no arquivo
+            print(elementoAtual.generateFrom)
             if elementoAtual.generateFrom == "move_up":
                 arq.writelines(str(elementoAtual.statePuzzle.mat) + " generate_from: move_up custo: " + str(elementoAtual.custo) + " profundidade: " + str(elementoAtual.profundidade) + "\n")
             elif elementoAtual.generateFrom == "move_down":
@@ -44,12 +80,15 @@ class Profundidade:
             else:
                 #o elementoAtual nao é o estado final devemos expandir seus filhos
                 #os nós criados sáo adicionas a listadeNodes dentro do for
-                self.visitList.append(elementoAtual.statePuzzle.mat)
+               
                 elementoAtual.set_filhos(self.visitList,self.moveList,self.estadoFinal)
-                print("Quantidade de filhos %d: "% (len(elementoAtual.filhos)))
-                print("Quantidade nos em visitList %d: "% (len(self.visitList)))
+#                print("Quantidade de filhos %d: "% (len(elementoAtual.filhos)))
+#                print("Quantidade nos em visitList %d: "% (len(self.visitList)))
+#                print("moveList" + str(self.moveList))
+                #print("visitList" + str(self.visitList) + "\n")
                 #embaralha os elementos para evitar loop
-                #random.shuffle(elementoAtual.filhos)
+                if(cont%aux==0):
+                    random.shuffle(elementoAtual.filhos)
                 for i in elementoAtual.filhos:
                     self.listaDeNodes.append(i)
                 arq.write("Número de nós da fronteira: " + str(len(self.listaDeNodes)) + " ")

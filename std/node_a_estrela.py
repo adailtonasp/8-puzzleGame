@@ -30,40 +30,29 @@ class Node:
 
 ### Métodos de Largura
     
-    #vamos considerar como  o h(n)
+    def findIndex(self,estadoFinal,ele):
+        auxLista = []
+        for i in range(0,len(estadoFinal)):
+            for j in range(0,len(estadoFinal)):
+                if estadoFinal[i][j] == ele:
+                    auxLista.append(i)
+                    auxLista.append(j)
+                    return auxLista
+        return auxLista        
+
+
     def avalia_funcao_custo(self,puzzleFilho):
         #calcula distancia de manhattan
-#        esta funcao calcula a distancia manhattan de cada elemento da matriz do estado final
-#        para a matriz passada como parametro e soma a variavel manhattanSoma
-        local1=[-1,-1] #guarda a localizacao do estadoFinal
-        local2=[-1,-1] #guarda a localizacao do puzzleFilho
-        flag=0
-        manhattanSoma=0 #manhattan e uma variavel acumuladora
-        for x in (-1,1,2,3,4,5,6,7,8):
-            for i in range(0,len(self.estadoFinal)):
-                for j in range(0,len(self.estadoFinal)):
-                    if (local1[0]!=-1) and (local2[0]!=-1):
-                        flag=1
-                        break
-                    elif (local1[0]!=-1) and (local2[0]==-1):
-                        if puzzleFilho.mat[i][j]==x:
-                            local2[0]=i
-                            local2[1]=j
-                    elif (local1[0]==-1) and (local2[0]!=-1):
-                        if self.estadoFinal[i][j]==x:
-                            local1[0]=i
-                            local1[0]=j
-                    else: #chega nesse else, se o elemento a ser calculado a distancia manhattan for 0
-                        if self.estadoFinal[i][j] == puzzleFilho.mat[i][j]:
-                            local1[0]=i
-                            local1[1]=j
-                            local2[0]=i
-                            local2[1]=i
-                if flag:
-                    break
-            #calcular a distancia manhattan
-            manhattanSoma = manhattanSoma + np.abs(local1[0]-local2[0]) + np.abs(local1[1]-local2[1])
-        return manhattanSoma        
+        manhattanSoma = 0
+    
+        for i in range(0,len(puzzleFilho.mat)):
+            for j in range(0,len(puzzleFilho.mat)):
+    
+                auxLista = self.findIndex(self.estadoFinal,puzzleFilho.mat[i][j])
+                
+                manhattanSoma += (np.abs(i - auxLista[0]) + np.abs(j - auxLista[1]))
+                
+        return manhattanSoma 
     
     def avalia_funcao_custo2(self,puzzleFilho):
         aux = 0;

@@ -42,7 +42,7 @@ class Puzzle:
             return [0, novoEstado]
     
     def move_right(self): #generate_for = 2
-        if self.nullPosition[1] + 1 > self.n - 1:
+        if self.nullPosition[1] + 1 >= self.n:
             return [1, None]
         else:
             novoEstado = copy.deepcopy(self)
@@ -68,4 +68,6 @@ class Puzzle:
             for j in range(0,len(self.mat[i])):
                 if(self.mat[i][j] != estadoFinal[i][j]):
                     return 1
-        return 0            
+        return 0 
+     
+    

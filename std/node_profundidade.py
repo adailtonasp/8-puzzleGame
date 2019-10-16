@@ -27,86 +27,69 @@ class Node:
         self.filhos = [] #lista de nós filhos
 
 ### Métodos de Profundidade            
-            
-    def move_up(self,moveList):
+
+    def move_up(self,visitList,moveList):
         auxPuzzle = self.statePuzzle.move_up()
         if not auxPuzzle[0]: # se o estado gerado for valido
-            auxPosition = auxPuzzle[1].nullPosition
-            auxPosition.append(0)
-            if not auxPosition in moveList:  # se o nullPosition já esteve nessa posição antes
-                self.auxCusto += 1
-                auxNode = Node(self,auxPuzzle[1],0,self.auxCusto,self.profundidade + 1)
-                self.filhos.insert(0,auxNode)
-                moveList.append(auxPosition)
+            if not auxPuzzle[1].mat in visitList:
+               # if not auxPuzzle[1].nullPosition in moveList:  # se o nullPosition já esteve nessa posição antes
+                    self.auxCusto += 1
+                    auxNode = Node(self,auxPuzzle[1],"move_up",self.auxCusto,self.profundidade + 1)
+                    self.filhos.append(auxNode)
+#                else:
+#                    self.lag = 1
 
-    def move_down(self,moveList):
+    def move_down(self,visitList,moveList):
         auxPuzzle = self.statePuzzle.move_down()
-        if not auxPuzzle[0]:  # se o estado gerado for valido
-            if not auxPuzzle[1].nullPosition.append(1) in moveList:  # se o nullPosition já esteve nessa posição antes
-                self.auxCusto += 1
-                auxNode = Node(self, auxPuzzle[1], 1, self.auxCusto, self.profundidade + 1)
-                self.filhos.insert(0, auxNode)
-                moveList.append(auxPuzzle[1].nullPosition)
-
-    def move_right(self,moveList):
-        auxPuzzle = self.statePuzzle.move_down()
-        if not auxPuzzle[0]:  # se o estado gerado for valido
-            if not auxPuzzle[1].nullPosition.append(2) in moveList:  # se o nullPosition já esteve nessa posição antes
-                self.auxCusto += 1
-                auxNode = Node(self, auxPuzzle[1], 2, self.auxCusto, self.profundidade + 1)
-                self.filhos.insert(0, auxNode)
-                moveList.append(auxPuzzle[1].nullPosition)
+        if not auxPuzzle[0]:
+            if not auxPuzzle[1].mat in visitList:
+               if not auxPuzzle[1].nullPosition in moveList:  # se o nullPosition já esteve nessa posição antes
+                    self.auxCusto += 1
+                    auxNode = Node(self,auxPuzzle[1],"move_down",self.auxCusto,self.profundidade + 1)
+                    self.filhos.append(auxNode)
+               else:
+                   self.flag = 1 
+            
     
-    def move_left(self,moveList):
+    def move_right(self,visitList,moveList):
+        auxPuzzle = self.statePuzzle.move_right()
+        if not auxPuzzle[0]:
+            if not auxPuzzle[1].mat in visitList:
+                if not auxPuzzle[1].nullPosition in moveList:  # se o nullPosition já esteve nessa posição antes
+                    self.auxCusto += 1
+                    auxNode = Node(self,auxPuzzle[1],"move_right",self.auxCusto,self.profundidade + 1)
+                    self.filhos.append(auxNode)
+                else:
+                    self.flag = 1
+            
+    
+    def move_left(self,visitList,moveList):
         auxPuzzle = self.statePuzzle.move_left()
-        if not auxPuzzle[0]:  # se o estado gerado for valido
-            if not auxPuzzle[1].nullPosition.append(3) in moveList:  # se o nullPosition já esteve nessa posição antes
-                self.auxCusto += 1
-                auxNode = Node(self, auxPuzzle[1], 3, self.auxCusto, self.profundidade + 1)
-                self.filhos.insert(0, auxNode)
-                moveList.append(auxPuzzle[1].nullPosition)
-
-    def set_filhos(self,moveList):
+        if not auxPuzzle[0]:
+            if not auxPuzzle[1].mat in visitList:
+                if not auxPuzzle[1].nullPosition in moveList:  # se o nullPosition já esteve nessa posição antes
+                    self.auxCusto += 1
+                    auxNode = Node(self,auxPuzzle[1],"move_left",self.auxCusto,self.profundidade + 1)
+                    self.filhos.append(auxNode)
+                else:
+                    self.flag = 1
+                    
+    def set_filhos(self,visitList,moveList,estadoFinal):
+#        print("visitList" + str(visitList) + "\n")
         self.auxCusto = self.custo
+        self.estadoFinal = estadoFinal
         #os generate_from é estabelecido aqui!!
+        self.flag = 0
+        #move_up
+        self.move_up(visitList,moveList)             
+        #move_down
+        self.move_down(visitList,moveList)
+        #move_right
+        self.move_right(visitList,moveList)
+        #move_left
+        self.move_left(visitList,moveList)
         
-        #se o estado foi gerado de um move_down, por exemplo, não se pode aplicar a operacao contraria
-        #, no caso, o move_up, pois isso expandira nos repetidos sem necessidade
-        
-        if self.generateFrom == 0: #significa que foi gerado por um move_up então não faca move_down!
-            #move_up
-            self.move_up(moveList)
-            #move_right
-            self.move_right(moveList)
-            #move_left    
-            self.move_left(moveList)
-        elif self.generateFrom == 1:
-            #move_down
-            self.move_down(moveList)
-            #move_right    
-            self.move_right(moveList)
-            #move_left
-            self.move_left(moveList)
-        elif self.generateFrom == 2:
-            #move_up
-            self.move_up(moveList)
-            #move_down
-            self.move_down(moveList)
-            #move_right
-            self.move_right(moveList)
-        elif self.generateFrom == 3:
-             #move_up
-            self.move_up(moveList)
-            #move_down
-            self.move_down(moveList)
-            #move_left
-            self.move_left(moveList)
-        else: #caso seja o root!
-            #move_up
-            self.move_up(moveList)
-            #move_down
-            self.move_down(moveList)
-            #move_right
-            self.move_right(moveList)
-            #move_left
-            self.move_left(moveList)
+        if self.flag:
+            aux = moveList.pop()
+            moveList.clear()
+            moveList.append(aux)

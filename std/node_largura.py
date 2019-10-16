@@ -29,75 +29,47 @@ class Node:
 
 ### Métodos de Largura
     
-    def move_up(self):
+    def move_up(self,visitList):
         auxPuzzle = self.statePuzzle.move_up()
         if not auxPuzzle[0]:
-            auxNode = Node(self,auxPuzzle[1],0,self.custo + len(self.listaDeNodes) + 1,self.profundidade + 1)
-            self.filhos.append(auxNode)
-            self.listaDeNodes.append(auxNode)
+            if not auxPuzzle[1].mat in visitList:
+                auxNode = Node(self,auxPuzzle[1],"move_up",self.custo + len(self.listaDeNodes) + 1,self.profundidade + 1)
+                self.filhos.append(auxNode)
+                self.listaDeNodes.append(auxNode)
     
-    def move_down(self):
+    def move_down(self,visitList):
         auxPuzzle = self.statePuzzle.move_down()
         if not auxPuzzle[0]:
-            auxNode = Node(self,auxPuzzle[1],1,self.custo + len(self.listaDeNodes) + 1,self.profundidade + 1)
-            self.filhos.append(auxNode)
-            self.listaDeNodes.append(auxNode)
+            if not auxPuzzle[1].mat in visitList:
+                auxNode = Node(self,auxPuzzle[1],"move_down",self.custo + len(self.listaDeNodes) + 1,self.profundidade + 1)
+                self.filhos.append(auxNode)
+                self.listaDeNodes.append(auxNode)
     
-    def move_right(self):
+    def move_right(self,visitList):
         auxPuzzle = self.statePuzzle.move_right()
         if not auxPuzzle[0]:
-            auxNode = Node(self,auxPuzzle[1],2,self.custo + len(self.listaDeNodes) + 1,self.profundidade + 1)
-            self.filhos.append(auxNode)
-            self.listaDeNodes.append(auxNode)
+            if not auxPuzzle[1].mat in visitList:
+                auxNode = Node(self,auxPuzzle[1],"move_right",self.custo + len(self.listaDeNodes) + 1,self.profundidade + 1)
+                self.filhos.append(auxNode)
+                self.listaDeNodes.append(auxNode)
     
-    def move_left(self):
+    def move_left(self,visitList):
         auxPuzzle = self.statePuzzle.move_left()
         if not auxPuzzle[0]:
-            auxNode = Node(self,auxPuzzle[1],3,self.custo + len(self.listaDeNodes) + 1,self.profundidade + 1)
-            self.filhos.append(auxNode)
-            self.listaDeNodes.append(auxNode)
+            if not auxPuzzle[1].mat in visitList:
+                auxNode = Node(self,auxPuzzle[1],"move_left",self.custo + len(self.listaDeNodes) + 1,self.profundidade + 1)
+                self.filhos.append(auxNode)
+                self.listaDeNodes.append(auxNode)
             
-    def set_filhos(self,listaDeNodes):
+    def set_filhos(self,listaDeNodes,visitList):
         self.listaDeNodes = listaDeNodes
         #os generate_from é estabelecido aqui!!
         
-        #se o estado foi gerado de um move_down, por exemplo, não se pode aplicar a operacao contraria
-        #, no caso, o move_up, pois isso expandira nos repetidos sem necessidade
-        
-        if self.generateFrom == 0: #significa que foi gerado por um move_up então não faca move_down!
-            #move_up
-            self.move_up()
-            #move_right
-            self.move_right()
-            #move_left    
-            self.move_left()
-        elif self.generateFrom == 1:
-            #move_down
-            self.move_down()
-            #move_right    
-            self.move_right()
-            #move_left
-            self.move_left()
-        elif self.generateFrom == 2:
-            #move_up
-            self.move_up()
-            #move_down
-            self.move_down()
-            #move_right
-            self.move_right()
-        elif self.generateFrom == 3:
-             #move_up
-            self.move_up()             
-            #move_down
-            self.move_down()
-            #move_left
-            self.move_left()
-        else: #caso seja o root!
-            #move_up
-            self.move_up()             
-            #move_down
-            self.move_down()
-            #move_right
-            self.move_right()
-            #move_left
-            self.move_left()
+        #move_up
+        self.move_up(visitList)             
+        #move_down
+        self.move_down(visitList)
+        #move_right
+        self.move_right(visitList)
+        #move_left
+        self.move_left(visitList)

@@ -13,10 +13,15 @@ class Largura:
         self.listaDeNodes = []
         self.listaDeNodes.append(root)
         self.estadoFinal = estadoFinal
+        self.visitList = []
+        self.teste_lista()
+        
+    def teste_lista(self):
         arq = open('output_Largura.txt','w')
-        arq.write("Busca em Largura\n")
+        arq.write("Busca em Largura\n")        
         while(True):
             elementoAtual = self.listaDeNodes.pop(0)
+            self.visitList.append(elementoAtual.statePuzzle.nullPosition)
             print(elementoAtual.statePuzzle.mat) #  <----PRINT
             #vamos gravar as saidas no arquivo
             if elementoAtual.generateFrom == 0:
@@ -34,11 +39,14 @@ class Largura:
                 #o elementoAtual possui o estado final!!
                 arq.write("Estado final encontrado!!!\nCusto = " + str(elementoAtual.custo) + "\nProfundidade = " + str(elementoAtual.profundidade)) 
                 print("O elementoAtual possui o estado final!!\n")
-                return elementoAtual
+                result = []
+                result.append(elementoAtual)
+                result.append(self.listaDeNodes)
+                return result
             else:
                 #o elementoAtual nao é o estado final devemos expandir seus filhos
                 #os nós criados sáo adicionas a listadeNodes dentro da funcao
-                elementoAtual.set_filhos(self.listaDeNodes)
+                elementoAtual.set_filhos(self.listaDeNodes,self.visitList)
                 arq.write("Número de nós da fronteira: " + str(len(self.listaDeNodes)) + " ")
         arq.close()
     
