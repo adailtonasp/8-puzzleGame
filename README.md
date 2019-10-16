@@ -7,7 +7,6 @@ Siga os passos abaixo para rodar o programa:
  - Selecione o algorítimo de busca desejado
  - Pressione o botão `RODAR ALGORITMO` e aguarde a solução
  - Com os resultado na tela é possível visualizar o caminho feito pelo algoritmo pressionando o botão `RODAR SIMULAÇÃO`
- - 
 
 >Contribuidores:[Adailton Palhano](https://github.com/adailtonasp), Victor Ramos, David Jonathas.
 
